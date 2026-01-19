@@ -101,10 +101,10 @@ export default function ContactPage() {
                     <h3 className="font-semibold text-foreground">Email</h3>
                   </div>
                   <a
-                    href="mailto:info@codecraft.com"
-                    className="text-primary hover:text-primary/80 font-medium text-lg"
+                    href="mailto:assignmentsprodesk@gmail.com"
+                    className="text-primary hover:text-primary/80 font-medium text-lg break-all"
                   >
-                    info@codecraft.com
+                    assignmentsprodesk@gmail.com
                   </a>
                   <p className="text-sm text-foreground/60">Response within 24 hours</p>
                 </div>
@@ -115,10 +115,10 @@ export default function ContactPage() {
                     <Phone className="h-5 w-5 text-primary" />
                     <h3 className="font-semibold text-foreground">Phone</h3>
                   </div>
-                  <a href="tel:+1234567890" className="text-primary hover:text-primary/80 font-medium text-lg">
-                    +1 (234) 567-890
+                  <a href="tel:+254758058974" className="text-primary hover:text-primary/80 font-medium text-lg">
+                    0758058974
                   </a>
-                  <p className="text-sm text-foreground/60">Monday-Friday, 9AM-6PM UTC</p>
+                  <p className="text-sm text-foreground/60">Monday-Friday, 9AM-6PM EAT</p>
                 </div>
 
                 {/* WhatsApp */}
@@ -128,12 +128,12 @@ export default function ContactPage() {
                     <h3 className="font-semibold text-foreground">WhatsApp</h3>
                   </div>
                   <a
-                    href="https://wa.me/1234567890"
+                    href="https://wa.me/254115900005"
                     className="text-primary hover:text-primary/80 font-medium text-lg"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Start Chat
+                    +254 115 900 005
                   </a>
                   <p className="text-sm text-foreground/60">Quick response for urgent matters</p>
                 </div>

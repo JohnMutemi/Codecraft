@@ -6,7 +6,7 @@ import Link from "next/link"
 import { INDUSTRIES } from "@/lib/constants"
 import { ArrowRight, BookOpen, Activity, Briefcase, Heart, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useCallback } from "react"
 
 const iconMap: Record<string, React.ReactNode> = {
   "book-open": <BookOpen className="h-6 w-6" />,
@@ -23,6 +23,25 @@ interface IndustriesModalProps {
 export function IndustriesModal({ isOpen, onClose }: IndustriesModalProps) {
   const modalRef = useRef<HTMLDivElement>(null)
   const backdropRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+  // Memoize the close handler for backdrop clicks only
+  const handleBackdropClick = useCallback((e: React.MouseEvent) => {
+    // Only close if clicking directly on the backdrop element itself
+    if (e.target === backdropRef.current) {
+      onClose()
+    }
+  }, [onClose])
+
+  // Prevent scroll events from propagating and causing unintended closes
+  const handleScroll = useCallback((e: React.UIEvent) => {
+    e.stopPropagation()
+  }, [])
+
+  // Prevent wheel events from propagating
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    e.stopPropagation()
+  }, [])
 
   useEffect(() => {
     if (!isOpen) return
@@ -31,21 +50,12 @@ export function IndustriesModal({ isOpen, onClose }: IndustriesModalProps) {
       if (e.key === "Escape") onClose()
     }
 
-    const handleBackdropClick = (e: MouseEvent) => {
-      // Only close if clicking directly on the backdrop element
-      if (backdropRef.current && e.target === backdropRef.current) {
-        onClose()
-      }
-    }
-
     document.addEventListener("keydown", handleEscape)
-    backdropRef.current?.addEventListener("click", handleBackdropClick)
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = "hidden"
     
     return () => {
       document.removeEventListener("keydown", handleEscape)
-      backdropRef.current?.removeEventListener("click", handleBackdropClick)
       document.body.style.overflow = previousOverflow
     }
   }, [isOpen, onClose])
@@ -56,6 +66,7 @@ export function IndustriesModal({ isOpen, onClose }: IndustriesModalProps) {
     <>
       <div
         ref={backdropRef}
+        onClick={handleBackdropClick}
         className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity duration-200 animate-fade-in"
       />
 
@@ -64,6 +75,7 @@ export function IndustriesModal({ isOpen, onClose }: IndustriesModalProps) {
         onClick={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
         onMouseUp={(e) => e.stopPropagation()}
+        onWheel={handleWheel}
         className="fixed top-1/2 left-1/2 z-50 w-[95vw] sm:w-[90vw] max-w-5xl max-h-[85vh] -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-border/50 bg-background/95 shadow-2xl backdrop-blur-xl animate-in fade-in scale-95 duration-200 flex flex-col overflow-hidden"
       >
         <div className="flex-shrink-0 flex items-center justify-between border-b border-border/30 px-6 sm:px-8 py-4 sm:py-5 bg-background/98">
@@ -81,10 +93,13 @@ export function IndustriesModal({ isOpen, onClose }: IndustriesModalProps) {
         </div>
 
         <div 
-          className="flex-1 p-6 sm:p-8 overflow-y-auto"
+          ref={scrollContainerRef}
+          className="flex-1 p-6 sm:p-8 overflow-y-auto overscroll-contain"
           onClick={(e) => e.stopPropagation()}
           onMouseDown={(e) => e.stopPropagation()}
           onMouseUp={(e) => e.stopPropagation()}
+          onScroll={handleScroll}
+          onWheel={handleWheel}
         >
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">

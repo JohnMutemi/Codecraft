@@ -8,7 +8,7 @@ export function WhatsAppWidget() {
 
   return (
     <a
-      href="https://wa.me/251115900005"
+      href="https://wa.me/254115900005"
       target="_blank"
       rel="noopener noreferrer"
       onMouseEnter={() => setIsHovered(true)}

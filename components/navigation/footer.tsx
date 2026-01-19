@@ -47,14 +47,14 @@ export function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-sm opacity-80">
                 <Mail className="h-4 w-4" />
-                <a href="mailto:info@codecraft.com" className="hover:text-primary">
-                  info@codecraft.com
+                <a href="mailto:assignmentsprodesk@gmail.com" className="hover:text-primary">
+                  assignmentsprodesk@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-2 text-sm opacity-80">
                 <Phone className="h-4 w-4" />
-                <a href="tel:+1234567890" className="hover:text-primary">
-                  +1 (234) 567-890
+                <a href="tel:+254758058974" className="hover:text-primary">
+                  0758058974
                 </a>
               </li>
               <li className="flex items-center gap-2 text-sm opacity-80">
