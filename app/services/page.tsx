@@ -1,26 +1,17 @@
-import type React from "react"
 import type { Metadata } from "next"
 import { Header } from "@/components/navigation/header"
 import { Footer } from "@/components/navigation/footer"
 import { Container } from "@/components/sections/container"
 import { ScrollCta } from "@/components/sections/scroll-cta"
-import { SERVICES } from "@/lib/constants"
-import { FeatureCard } from "@/components/sections/feature-card"
 import Link from "next/link"
-import { Shield, BookOpen, Activity, Code, ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ServicesGrid } from "./services-grid"
 
 export const metadata: Metadata = {
   title: "Services - CodeCraft ICT Solutions",
   description:
     "Explore our comprehensive ICT consulting and cybersecurity services for schools, hospitals, SMEs, and NGOs.",
-}
-
-const iconMap: Record<string, React.ReactNode> = {
-  shield: <Shield className="h-6 w-6" />,
-  "book-open": <BookOpen className="h-6 w-6" />,
-  activity: <Activity className="h-6 w-6" />,
-  code: <Code className="h-6 w-6" />,
 }
 
 export default function ServicesPage() {
@@ -54,7 +45,7 @@ export default function ServicesPage() {
                 Comprehensive <span className="text-primary">ICT Solutions</span>
               </h1>
               <p className="text-xl sm:text-2xl text-foreground/70 leading-relaxed max-w-3xl">
-                Enterprise-grade ICT consulting and cybersecurity services tailored to your organization's unique
+                Enterprise-grade ICT consulting and cybersecurity services tailored to your organization&apos;s unique
                 challenges and goals.
               </p>
             </div>
@@ -75,7 +66,7 @@ export default function ServicesPage() {
                 Ready to Explore Our Services?
               </h2>
               <p className="mx-auto mb-6 sm:mb-8 max-w-2xl text-base sm:text-lg text-foreground/60 leading-relaxed">
-                Discover how our comprehensive ICT solutions can address your organization's unique challenges and goals.
+                Discover how our comprehensive ICT solutions can address your organization&apos;s unique challenges and goals.
               </p>
               <Button
                 asChild
@@ -91,31 +82,8 @@ export default function ServicesPage() {
           </Container>
         </section>
 
-        {/* Services Grid */}
-        <section id="services-section" className="relative bg-background py-12 sm:py-16 lg:py-20">
-          {/* Visible Pattern */}
-          <div 
-            className="absolute inset-0 opacity-[0.08]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2H0v-2h20v-2H0V8h20V6H0V4h20V2H0V0h22v20h2V0h2v20h2V0h2v20h2V0h2v20h2V0h2v22H20v-1.5zM0 20h2v20H0V20zm4 0h2v20H4V20zm4 0h2v20H8V20zm4 0h2v20h-2V20zm4 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2z'/%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          ></div>
-          
-          <Container className="relative space-y-12">
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {SERVICES.map((service) => (
-                <Link key={service.id} href={service.href} className="group h-full">
-                  <FeatureCard
-                    icon={iconMap[service.icon]}
-                    title={service.title}
-                    description={service.description}
-                    className="h-full"
-                  />
-                </Link>
-              ))}
-            </div>
-          </Container>
-        </section>
+        {/* Services Grid - Client Component with API data */}
+        <ServicesGrid />
       </main>
       <Footer />
     </>

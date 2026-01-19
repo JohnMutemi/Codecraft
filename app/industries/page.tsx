@@ -5,100 +5,13 @@ import { Container } from "@/components/sections/container"
 import { ScrollCta } from "@/components/sections/scroll-cta"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { INDUSTRIES } from "@/lib/constants"
-import { BookOpen, Activity, Briefcase, Heart, ArrowRight } from "lucide-react"
-import type React from "react"
+import { ArrowRight } from "lucide-react"
+import { IndustriesGrid } from "./industries-grid"
 
 export const metadata: Metadata = {
   title: "Industries - CodeCraft ICT Solutions",
   description:
     "Explore how CodeCraft serves schools, hospitals, SMEs, and NGOs with tailored ICT solutions addressing sector-specific challenges.",
-}
-
-const iconMap: Record<string, React.ReactNode> = {
-  schools: <BookOpen className="h-6 w-6" />,
-  hospitals: <Activity className="h-6 w-6" />,
-  smes: <Briefcase className="h-6 w-6" />,
-  ngos: <Heart className="h-6 w-6" />,
-}
-
-const industryDetails = {
-  schools: {
-    challenges: [
-      "Digital infrastructure for modern learning",
-      "Student and administrative data management",
-      "Secure connectivity for learning environments",
-    ],
-    solutions: [
-      "Integrated learning management systems (LMS)",
-      "Student Information Systems (SIS)",
-      "Secure school connectivity infrastructure",
-      "Digital classroom enablement",
-    ],
-    outcomes: [
-      "Enhanced teaching and learning quality",
-      "Streamlined administrative processes",
-      "Improved student engagement and outcomes",
-      "Secure, compliant data management",
-    ],
-  },
-  hospitals: {
-    challenges: [
-      "Secure patient data management (HIPAA/local compliance)",
-      "Medical device integration and interoperability",
-      "Real-time clinical decision support",
-    ],
-    solutions: [
-      "Electronic Health Records (EHR) systems",
-      "Medical device integration platforms",
-      "Secure patient communication systems",
-      "Clinical data analytics and reporting",
-    ],
-    outcomes: [
-      "Improved patient care coordination",
-      "Regulatory compliance and audit readiness",
-      "Operational efficiency gains",
-      "Enhanced clinical outcomes tracking",
-    ],
-  },
-  smes: {
-    challenges: [
-      "Cost-effective IT infrastructure scaling",
-      "Operational efficiency and automation",
-      "Cybersecurity without enterprise budgets",
-    ],
-    solutions: [
-      "Scalable cloud and hybrid infrastructure",
-      "Business process automation",
-      "Affordable enterprise security",
-      "Custom business applications",
-    ],
-    outcomes: [
-      "Competitive advantage through technology",
-      "Reduced operational costs",
-      "Improved business agility",
-      "Better risk management",
-    ],
-  },
-  ngos: {
-    challenges: [
-      "Limited ICT budgets and resources",
-      "Complex beneficiary data management",
-      "Impact measurement and reporting",
-    ],
-    solutions: [
-      "Open-source and cost-effective technology",
-      "Beneficiary management systems",
-      "Impact tracking and analytics platforms",
-      "Donor reporting systems",
-    ],
-    outcomes: [
-      "Maximized social impact per dollar spent",
-      "Better beneficiary services",
-      "Transparent impact reporting",
-      "Improved donor confidence",
-    ],
-  },
 }
 
 export default function IndustriesPage() {
@@ -152,7 +65,7 @@ export default function IndustriesPage() {
                 Ready to Explore Your Industry Solution?
               </h2>
               <p className="mx-auto mb-6 sm:mb-8 max-w-2xl text-base sm:text-lg text-foreground/60 leading-relaxed">
-                Let's discuss how CodeCraft can address your organization's specific ICT challenges and deliver tailored solutions.
+                Let&apos;s discuss how CodeCraft can address your organization&apos;s specific ICT challenges and deliver tailored solutions.
               </p>
               <Button
                 asChild
@@ -168,86 +81,15 @@ export default function IndustriesPage() {
           </Container>
         </section>
 
-        {/* Industries Overview */}
-        <div id="industries-section" className="relative bg-background">
-          {/* Visible Pattern */}
-          <div 
-            className="absolute inset-0 opacity-[0.08]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2H0v-2h20v-2H0V8h20V6H0V4h20V2H0V0h22v20h2V0h2v20h2V0h2v20h2V0h2v20h2V0h2v22H20v-1.5zM0 20h2v20H0V20zm4 0h2v20H4V20zm4 0h2v20H8V20zm4 0h2v20h-2V20zm4 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2z'/%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          ></div>
-          
-        {INDUSTRIES.map((industry) => {
-          const details = industryDetails[industry.id as keyof typeof industryDetails]
-          return (
-            <section key={industry.id} className="relative border-t border-border bg-background py-12 sm:py-16">
-              <Container>
-                <div className="space-y-12">
-                  {/* Header */}
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                      {iconMap[industry.id]}
-                    </div>
-                    <div>
-                      <h2 className="text-3xl font-bold text-foreground">{industry.title}</h2>
-                    </div>
-                  </div>
-
-                  {/* Challenges, Solutions, Outcomes Grid */}
-                  <div className="grid gap-8 sm:grid-cols-3">
-                    {/* Challenges */}
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-foreground">Key Challenges</h3>
-                      <ul className="space-y-3">
-                        {details.challenges.map((challenge) => (
-                          <li key={challenge} className="flex gap-3 text-sm text-foreground/60">
-                            <span className="h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0 mt-1.5" />
-                            {challenge}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Solutions */}
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-foreground">Our Solutions</h3>
-                      <ul className="space-y-3">
-                        {details.solutions.map((solution) => (
-                          <li key={solution} className="flex gap-3 text-sm text-foreground/60">
-                            <span className="h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0 mt-1.5" />
-                            {solution}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Outcomes */}
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-foreground">Expected Outcomes</h3>
-                      <ul className="space-y-3">
-                        {details.outcomes.map((outcome) => (
-                          <li key={outcome} className="flex gap-3 text-sm text-foreground/60">
-                            <span className="h-1.5 w-1.5 rounded-full bg-primary/60 flex-shrink-0 mt-1.5" />
-                            {outcome}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </Container>
-            </section>
-          )
-        })}
-        </div>
+        {/* Industries Grid - Client Component with API data */}
+        <IndustriesGrid />
 
         {/* CTA Section */}
         <section className="bg-muted/50 py-20 sm:py-28">
           <Container className="text-center space-y-6">
             <h2 className="text-3xl font-bold text-foreground">Ready to Explore Your Industry Solution?</h2>
             <p className="mx-auto max-w-2xl text-lg text-foreground/60">
-              Let's discuss how CodeCraft can address your organization's specific ICT challenges.
+              Let&apos;s discuss how CodeCraft can address your organization&apos;s specific ICT challenges.
             </p>
             <Link
               href="/contact"

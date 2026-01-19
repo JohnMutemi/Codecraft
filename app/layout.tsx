@@ -9,10 +9,9 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "<> CodeCraft | Enterprise ICT Solutions & Cybersecurity",
+  title: "CodeCraft | Enterprise ICT Solutions & Cybersecurity",
   description:
     "Professional ICT consultancy providing enterprise-grade cybersecurity, system upgrades, and custom software solutions for schools, hospitals, SMEs, and NGOs. Security-first. Reliability-focused.",
-  generator: "v0.app",
   keywords:
     "ICT consulting, cybersecurity solutions, IT services, school ICT infrastructure, hospital IT systems, business IT consulting",
   metadataBase: new URL("https://codecraft-ict.com"),
@@ -21,7 +20,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://codecraft-ict.com",
     siteName: "CodeCraft ICT Solutions",
-    title: "<> CodeCraft | Enterprise ICT Solutions & Cybersecurity",
+    title: "CodeCraft | Enterprise ICT Solutions & Cybersecurity",
     description:
       "Professional ICT consultancy providing enterprise-grade cybersecurity, system upgrades, and custom software solutions.",
     images: [
@@ -38,19 +37,22 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
       {
         url: "/icon-light-32x32.png",
+        sizes: "32x32",
+        type: "image/png",
         media: "(prefers-color-scheme: light)",
       },
       {
         url: "/icon-dark-32x32.png",
+        sizes: "32x32",
+        type: "image/png",
         media: "(prefers-color-scheme: dark)",
       },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
     ],
+    shortcut: "/favicon.ico",
     apple: "/apple-icon.png",
   },
 }

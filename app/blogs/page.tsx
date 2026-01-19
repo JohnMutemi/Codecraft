@@ -4,9 +4,10 @@ import { Container } from "@/components/sections/container"
 import { SectionHeader } from "@/components/sections/section-header"
 import { ScrollCta } from "@/components/sections/scroll-cta"
 import Link from "next/link"
-import { ArrowRight, Calendar, Clock } from "lucide-react"
+import { ArrowRight, Calendar, Clock, ExternalLink, Newspaper, BookOpen, TrendingUp, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
+// Our curated blog posts
 const BLOG_POSTS = [
   {
     id: "cybersecurity",
@@ -17,6 +18,7 @@ const BLOG_POSTS = [
     readTime: "8 min read",
     date: "2024-01-15",
     href: "/blogs/cybersecurity",
+    featured: true,
   },
   {
     id: "systems-security",
@@ -27,6 +29,7 @@ const BLOG_POSTS = [
     readTime: "10 min read",
     date: "2024-01-10",
     href: "/blogs/systems-security",
+    featured: true,
   },
   {
     id: "custom-software",
@@ -37,10 +40,37 @@ const BLOG_POSTS = [
     readTime: "12 min read",
     date: "2024-01-05",
     href: "/blogs/custom-software",
+    featured: true,
   },
 ]
 
-export default function BlogsPage() {
+// Fetch live news from our API
+async function getNews() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` 
+      : "http://localhost:3000"
+    
+    const response = await fetch(`${baseUrl}/api/news`, {
+      next: { revalidate: 3600 }, // Revalidate every hour
+    })
+    
+    if (!response.ok) {
+      throw new Error("Failed to fetch news")
+    }
+    
+    return response.json()
+  } catch (error) {
+    console.error("Error fetching news:", error)
+    return { articles: [], source: "error" }
+  }
+}
+
+export default async function BlogsPage() {
+  const newsData = await getNews()
+  const liveArticles = newsData.articles || []
+  const newsSource = newsData.source
+
   return (
     <>
       <Header />
@@ -65,7 +95,7 @@ export default function BlogsPage() {
           <Container className="relative z-10 py-12 sm:py-16">
             <div className="max-w-4xl space-y-8 text-center">
               <div className="inline-block px-4 py-2 bg-primary/20 backdrop-blur-md border border-primary/30 rounded-full mb-4">
-                <span className="text-sm font-semibold text-primary uppercase tracking-wider">Our Blog</span>
+                <span className="text-sm font-semibold text-primary uppercase tracking-wider">Knowledge Hub</span>
               </div>
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-foreground leading-tight">
                 Insights & <span className="text-primary">Expertise</span>
@@ -108,7 +138,7 @@ export default function BlogsPage() {
           </Container>
         </section>
 
-        {/* Blog Posts Grid */}
+        {/* Featured Blog Posts */}
         <section id="blog-posts-section" className="relative py-12 sm:py-16 lg:py-20 bg-background">
           {/* Visible Pattern */}
           <div 
@@ -118,18 +148,32 @@ export default function BlogsPage() {
             }}
           ></div>
           <Container className="relative space-y-10 sm:space-y-12">
-            <SectionHeader
-              subtitle="Latest Articles"
-              title="Expert Insights & Best Practices"
-              description="Explore our comprehensive guides and expert opinions on ICT solutions, security, and digital transformation."
-            />
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <BookOpen className="h-5 w-5 text-primary" />
+              </div>
+              <SectionHeader
+                subtitle="Featured Articles"
+                title="Expert Guides & Best Practices"
+                description="Deep-dive articles written by our team of ICT and cybersecurity experts."
+              />
+            </div>
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {BLOG_POSTS.map((post) => (
                 <article
                   key={post.id}
-                  className="group flex flex-col rounded-xl border border-border/50 bg-gradient-to-br from-background to-muted/20 p-6 sm:p-8 transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1"
+                  className="group flex flex-col rounded-xl border border-border/50 bg-gradient-to-br from-background to-muted/20 p-6 sm:p-8 transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 relative overflow-hidden"
                 >
+                  {post.featured && (
+                    <div className="absolute top-4 right-4">
+                      <span className="flex items-center gap-1 px-2 py-1 text-[10px] font-semibold text-primary bg-primary/10 rounded-full">
+                        <Sparkles className="h-3 w-3" />
+                        Featured
+                      </span>
+                    </div>
+                  )}
+                  
                   <div className="mb-4">
                     <span className="inline-block px-3 py-1 text-xs font-semibold text-primary bg-primary/10 rounded-full">
                       {post.category}
@@ -161,13 +205,149 @@ export default function BlogsPage() {
                     className="w-full group/btn border-primary/30 hover:border-primary hover:bg-primary hover:text-white transition-all"
                   >
                     <Link href={post.href} className="gap-2">
-                      Read More
+                      Read Article
                       <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                     </Link>
                   </Button>
                 </article>
               ))}
             </div>
+          </Container>
+        </section>
+
+        {/* Live Tech News Section */}
+        <section className="relative py-12 sm:py-16 lg:py-20 bg-muted/30">
+          <div 
+            className="absolute inset-0 opacity-[0.05]"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Ccircle cx='3' cy='3' r='1.5'/%3E%3Ccircle cx='13' cy='13' r='1.5'/%3E%3Ccircle cx='3' cy='13' r='1.5'/%3E%3Ccircle cx='13' cy='3' r='1.5'/%3E%3C/g%3E%3C/svg%3E")`,
+            }}
+          ></div>
+          <Container className="relative space-y-10 sm:space-y-12">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-accent/10">
+                  <TrendingUp className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Industry Pulse</h2>
+                    {newsSource === "live" && (
+                      <span className="flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 bg-emerald-500/10 rounded-full animate-pulse">
+                        <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                        Live
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-foreground/60 mt-1">
+                    {newsSource === "live" 
+                      ? "Real-time tech and cybersecurity news from around the world"
+                      : "Curated insights on technology and cybersecurity trends"
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {liveArticles.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {liveArticles.map((article: { id: string; title: string; description: string; url: string; source: string; publishedAt: string; imageUrl?: string; category: string }) => (
+                  <article
+                    key={article.id}
+                    className="group flex flex-col rounded-xl border border-border/50 bg-background p-5 transition-all duration-300 hover:border-accent/50 hover:shadow-md"
+                  >
+                    {/* Category Badge */}
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="inline-block px-2.5 py-1 text-[10px] font-semibold text-accent bg-accent/10 rounded-full uppercase tracking-wider">
+                        {article.category}
+                      </span>
+                      <div className="flex items-center gap-1 text-[10px] text-foreground/40">
+                        <Newspaper className="h-3 w-3" />
+                        {article.source}
+                      </div>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-base font-semibold text-foreground mb-2 group-hover:text-accent transition-colors leading-snug line-clamp-2">
+                      {article.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-xs text-foreground/60 mb-4 leading-relaxed flex-1 line-clamp-3">
+                      {article.description}
+                    </p>
+
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pt-3 border-t border-border/30">
+                      <div className="flex items-center gap-1.5 text-[10px] text-foreground/40">
+                        <Calendar className="h-3 w-3" />
+                        <span>
+                          {new Date(article.publishedAt).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </span>
+                      </div>
+                      
+                      {article.url && article.url !== "#" ? (
+                        <a
+                          href={article.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 text-xs font-medium text-accent hover:text-accent/80 transition-colors"
+                        >
+                          Read More
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      ) : (
+                        <span className="text-xs text-foreground/40">CodeCraft Insight</span>
+                      )}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 rounded-xl border border-border/50 bg-background/50">
+                <Newspaper className="h-12 w-12 text-foreground/20 mx-auto mb-4" />
+                <p className="text-foreground/60">Loading industry insights...</p>
+              </div>
+            )}
+
+            {/* Industry News CTA */}
+            <div className="text-center pt-4">
+              <p className="text-sm text-foreground/50 mb-4">
+                Want personalized insights for your industry?
+              </p>
+              <Button asChild variant="outline" className="border-accent/30 hover:border-accent hover:bg-accent/5">
+                <Link href="/contact" className="gap-2">
+                  <Sparkles className="h-4 w-4" />
+                  Get Custom Analysis
+                </Link>
+              </Button>
+            </div>
+          </Container>
+        </section>
+
+        {/* Newsletter/CTA Section */}
+        <section className="relative py-16 sm:py-20 bg-gradient-to-r from-primary/5 via-background to-accent/5">
+          <div 
+            className="absolute inset-0 opacity-[0.06]"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }}
+          ></div>
+          <Container className="relative text-center space-y-6">
+            <h2 className="text-3xl font-bold text-foreground">Need Expert ICT Guidance?</h2>
+            <p className="mx-auto max-w-2xl text-lg text-foreground/60">
+              Our team of cybersecurity and ICT experts is ready to help you navigate the complex world of technology.
+              Get in touch for personalized consultation.
+            </p>
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl">
+              <Link href="/contact" className="gap-2">
+                Schedule a Consultation
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
           </Container>
         </section>
       </main>

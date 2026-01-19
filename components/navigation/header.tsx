@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Menu, X, ChevronDown } from "lucide-react"
 import { NAVIGATION_ITEMS } from "@/lib/constants"
 import { Button } from "@/components/ui/button"
@@ -14,8 +14,6 @@ export function Header() {
   const [servicesModalOpen, setServicesModalOpen] = useState(false)
   const [industriesModalOpen, setIndustriesModalOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const servicesContainerRef = useRef<HTMLDivElement>(null)
-  const industriesContainerRef = useRef<HTMLDivElement>(null)
 
   // Handle scroll effect
   useEffect(() => {
@@ -42,29 +40,6 @@ export function Header() {
       setServicesModalOpen(false)
     }
   }
-
-  // Close modals when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        servicesContainerRef.current &&
-        !servicesContainerRef.current.contains(event.target as Node) &&
-        industriesContainerRef.current &&
-        !industriesContainerRef.current.contains(event.target as Node)
-      ) {
-        setServicesModalOpen(false)
-        setIndustriesModalOpen(false)
-      }
-    }
-
-    if (servicesModalOpen || industriesModalOpen) {
-      document.addEventListener("mousedown", handleClickOutside)
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [servicesModalOpen, industriesModalOpen])
 
   return (
     <>
@@ -103,7 +78,7 @@ export function Header() {
             {NAVIGATION_ITEMS.map((item) => {
               if (item.label === "Services") {
                 return (
-                  <div key={item.href} ref={servicesContainerRef} className="relative">
+                  <div key={item.href} className="relative">
                     <button
                       onClick={handleServicesClick}
                       className={`flex items-center gap-1 px-4 py-2 text-sm font-semibold transition-colors duration-200 group ${
@@ -127,7 +102,7 @@ export function Header() {
 
               if (item.label === "Industries") {
                 return (
-                  <div key={item.href} ref={industriesContainerRef} className="relative">
+                  <div key={item.href} className="relative">
                     <button
                       onClick={handleIndustriesClick}
                       className={`flex items-center gap-1 px-4 py-2 text-sm font-semibold transition-colors duration-200 group ${
